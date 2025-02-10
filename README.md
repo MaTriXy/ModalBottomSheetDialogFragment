@@ -1,10 +1,29 @@
 # ModalBottomSheetDialogFragment
+Modal bottom sheet dialog based on the [Material Guidelines](https://material.io/components/sheets-bottom)
 
-Modal bottom sheet dialog based on the [Material Guidelines](https://material.io/guidelines/components/bottom-sheets.html#bottom-sheets-modal-bottom-sheets)
-
-[![Build Status](https://travis-ci.org/Commit451/ModalBottomSheetDialogFragment.svg?branch=master)](https://travis-ci.org/Commit451/ModalBottomSheetDialogFragment) [![](https://jitpack.io/v/Commit451/ModalBottomSheetDialogFragment.svg)](https://jitpack.io/#Commit451/ModalBottomSheetDialogFragment)
+[![](https://jitpack.io/v/Commit451/ModalBottomSheetDialogFragment.svg)](https://jitpack.io/#Commit451/ModalBottomSheetDialogFragment)
 
 <img src="/art/simple.png?raw=true" width="200px"> <img src="/art/header.png?raw=true" width="200px"> <img src="/art/custom.png?raw=true" width="200px">
+
+## Dependency
+
+Add this in your root `build.gradle` file (**not** your module `build.gradle` file):
+
+```gradle
+allprojects {
+	repositories {
+		...
+		maven { url "https://jitpack.io" }
+	}
+}
+```
+
+Then, add the library to your project `build.gradle`
+```gradle
+dependencies {
+    implementation("com.github.Commit451:ModalBottomSheetDialogFragment:latest.version.here")
+}
+```
 
 ## Usage
 `ModalBottomSheetDialogFragment`s are typically inflated via a menu item resource. The menu item resource defines the title, icon, and ID is of each `Option`. The menu item resource might looks something like this:
@@ -35,9 +54,17 @@ ModalBottomSheetDialogFragment.Builder()
     .add(R.menu.options)
     .show(supportFragmentManager, "options")
 ```
-Make sure that your activity or fragment implements `ModalBottomSheetDialogFragment.Listener`. For example:
+Make sure that your `Activity` or `Fragment` implements `ModalBottomSheetDialogFragment.Listener`. For example:
 ```kotlin
 override fun onModalOptionSelected(tag: String?, option: Option) {
+    when (option.id) {
+        R.id.action_edit -> {
+            // edit something
+        }
+        R.id.action_delete -> {
+            // delete something
+        }
+    }
     Snackbar.make(root, "Selected option ${option.title} from fragment with tag $tag", Snackbar.LENGTH_SHORT)
             .show()
 }
@@ -49,6 +76,7 @@ ModalBottomSheetDialogFragment.Builder()
     //custom option, without needing menu XML
     .add(OptionRequest(123, "Custom", R.drawable.ic_bluetooth_black_24dp))
     .layout(R.layout.item_custom)
+    .theme(R.style.CustomTheme)
     .header("Neat")
     .columns(3)
     .show(supportFragmentManager, "custom")
@@ -58,7 +86,7 @@ See the sample app for more.
 License
 --------
 
-    Copyright 2018 Commit 451
+    Copyright 2022 Commit 451
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
